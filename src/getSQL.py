@@ -36,6 +36,9 @@ app=FastAPI()
 class QueryInput(BaseModel):
     question:str
 
+@app.get("/")
+async def root():
+    return{"message":"API is Up and Running"}
 
 @app.post("/query")
 async def stream_answer(query_input:QueryInput):
