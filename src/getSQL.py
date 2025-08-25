@@ -4,12 +4,12 @@ from langchain.chat_models import init_chat_model
 from langchain_community.chat_models import ChatOllama
 from langchain import hub
 from langgraph.prebuilt import create_react_agent
-from connectDB import connectDB, loadAPI, loadURL
+from .connectDB import connectDB, loadAPI, loadURL
 
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
-from typing import Any, List, Optional
+# from typing import Any, List, Optional
 import json
 
 cDB=connectDB()
