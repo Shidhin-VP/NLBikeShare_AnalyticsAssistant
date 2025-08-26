@@ -18,7 +18,9 @@ url=loadURL()
 
 db=SQLDatabase.from_uri(url)
 
-llm=ChatOllama(model='llama3.2')
+# llm=ChatOllama(model='llama3.2')
+
+llm=init_chat_model('gpt-4o-mini',model_provider='openai',api_key=loadAPI())
 
 toolkit=SQLDatabaseToolkit(db=db,llm=llm)
 
@@ -28,7 +30,6 @@ prompt_template=hub.pull('langchain-ai/sql-agent-system-prompt')
 
 system_message=prompt_template.format(dialect=str(db.dialect),top_k=5)
 
-llm=init_chat_model('gpt-4o-mini',model_provider='openai',api_key=loadAPI())
 
 sql_agent=create_react_agent(llm,tools,prompt=system_message)
 
