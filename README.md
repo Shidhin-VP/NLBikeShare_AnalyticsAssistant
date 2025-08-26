@@ -9,15 +9,15 @@ The app is connected to a Postgres Database, when the user ask questions to find
   ⬇️  
 🌐 Frontend sends request to FastAPI Backend (hosted on Heroku)  
   ⬇️  
-🤖 Backend calls OpenAI OpenAI API  
+🤖 Backend converts user query to sql query ↔️ OpenAI API  
   ⬇️  
-📬 Response received from OpenAI API  
+📬 Backend fetches data according to the SQL ↔️ Postgres DataBase
   ⬇️  
-🔁 Backend processes and returns result to Frontend    
+🔁 Backend processes the fetched data to user friendly response ↔️ OpenAI API 
   ⬇️  
-🎯 Output displayed to the User
+🎯 Output displayed to the User (to Streamlit / Mobile App)
 
-URL for Accessing the Sites:
+# URL for Accessing the Sites:  
 https://bikeshareanalyticsassistant.streamlit.app/
 For the Access Code, please DM. 
 APK for the Mobile app can be find on the APK file that can be found in this main folder
