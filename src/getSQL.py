@@ -31,7 +31,7 @@ prompt_template=hub.pull('langchain-ai/sql-agent-system-prompt')
 system_message=prompt_template.format(dialect=str(db.dialect),top_k=5)
 
 
-sql_agent=create_react_agent(llm,tools,prompt=f"{system_message}+ Give me the output in a list of two section, one with the answer on how you are giving me and the other one with SQL for the answer")
+sql_agent=create_react_agent(llm,tools,prompt=system_message)
 
 app=FastAPI()
 
@@ -48,13 +48,21 @@ async def stream_answer(query_input:QueryInput):
     def even_stream():
         for event in sql_agent.stream({"messages":("user",question)},stream_mode='values'):
             print("Event: ",event)
-            print(f"Tool Calls: {event.get("tool_calls","No Tool Got")}")
             for msg in event.get("messages",[]):
+                print("Message MSG: ",msg)
                 print(f"Checker: {isinstance(msg,AIMessage)}")
                 if  isinstance(msg,AIMessage):
                     print(f"Message Conntent: {msg.content}")
                     # yield msg.content
                     yield (json.dumps({"answer":msg.content})+"\n").encode("utf-8")
+            for tools in event.get("tool_calls",[]):
+                print(f"Toosl Length: {len(tools)}")
+                print(f"Toosl detaisl: {tools}")
+                if tools.get("name")=="query_sql_db":
+                    sql_args=tools.get("args",{})
+                    sql_query=sql_args.get("query")
+                    if sql_query:
+                        print("SQL: ",sql_query)
 
 
     return StreamingResponse(even_stream(),media_type="application/x-ndjson")
