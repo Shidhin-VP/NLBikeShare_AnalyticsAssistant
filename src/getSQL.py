@@ -31,7 +31,7 @@ prompt_template=hub.pull('langchain-ai/sql-agent-system-prompt')
 system_message=prompt_template.format(dialect=str(db.dialect),top_k=5)
 
 
-sql_agent=create_react_agent(llm,tools,prompt=system_message)
+sql_agent=create_react_agent(llm,tools,prompt=f"{system_message}+ Give me the output in a list of two section, one with the answer on how you are giving me and the other one with SQL for the answer")
 
 app=FastAPI()
 
