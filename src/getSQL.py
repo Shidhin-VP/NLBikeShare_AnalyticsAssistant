@@ -53,7 +53,7 @@ async def stream_answer(query_input:QueryInput):
                 print(f"Checker: {isinstance(msg,AIMessage)}")
                 if  isinstance(msg,AIMessage):
                     print(f"Message Conntent: {msg.content}")
-                    print(f"Message SQL Content: {msg.additional_kwargs["tool_calls"]}")
+                    print(f"Message SQL Content: {msg.additional_kwargs.tool_calls}")
                     # yield msg.content
                     yield (json.dumps({"answer":msg.content})+"\n").encode("utf-8")
 
