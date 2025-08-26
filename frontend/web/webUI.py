@@ -42,7 +42,7 @@ st.markdown("Ask me anything about NL Bike Share data!")
 question = st.text_input("Type your question and press Enter:", placeholder="e.g. How many kilometres were ridden by women on rainy days in June 2025?")
 
 if question:
-    # st.chat_message("user").markdown(question)
+    st.chat_message("user").markdown(question)
     st.session_state.chat_history.append({"role": "user", "content": question})
 
     # ---------------------------
