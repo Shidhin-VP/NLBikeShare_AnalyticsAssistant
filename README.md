@@ -18,3 +18,5 @@ The app is connected to a Postgres Database, when the user ask questions to find
 🎯 Output displayed to the User
 
 # Demo
+![Under1Gif2](https://github.com/user-attachments/assets/fa855207-148f-4ec8-b0e3-7403ff113cad)
+
