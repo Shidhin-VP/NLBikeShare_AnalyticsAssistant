@@ -49,7 +49,8 @@ class _ChatPageState extends State<ChatPage> {
             });
             try {
               String reply = await sendQuestiontoBackend(message.text);
-              final Map<String, dynamic> decoded = jsonDecode(reply);
+              print("Reply: $reply");
+              // final Map<String, dynamic> decoded = jsonDecode(reply);
               final botMessage = ChatMessage(
                 user: ChatUser(id: '2', firstName: "Assistant"),
                 text: reply,
