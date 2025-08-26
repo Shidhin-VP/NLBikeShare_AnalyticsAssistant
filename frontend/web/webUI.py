@@ -58,7 +58,7 @@ if question:
                 for line in r.iter_lines():
                     if line:
                         data = json.loads(line.decode("utf-8"))
-                        token = data.get("answer", "")
+                        token = data.get("result", "")
                         full_response += token
                         response_area.markdown(full_response + "▌")  
         except Exception as e:

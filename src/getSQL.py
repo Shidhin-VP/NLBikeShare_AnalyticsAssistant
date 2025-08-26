@@ -47,28 +47,31 @@ async def stream_answer(query_input:QueryInput):
     sqlList=[]
     question=query_input.question
     def even_stream():
-        for event in sql_agent.stream({"messages":("user",question)},stream_mode='values'):
-            print("Event: ",event)
-            for msg in event.get("messages",[]):
-                # print("Message MSG: ",msg)
-                # print(f"Checker: {isinstance(msg,AIMessage)}")
-                if  isinstance(msg,AIMessage):
-                    # print(f"Message Conntent: {msg.content}")
-                    tool_calls = msg.additional_kwargs.get("tool_calls", [])
-                    if tool_calls:
-                        arguments_json = tool_calls[0]['function']['arguments']
-                        arguments = json.loads(arguments_json)  # Parse the JSON string
-                        sql_query = arguments.get('query')
-                        if sql_query is not None:
-                            sqlList.append(sql_query)
-                        # print("SQL Query:", sql_query)
-                    else:
-                        # print("No tool calls found.")
-                        pass
-                    # print(f"Message SQL Content: {msg.additional_kwargs.get("tool_calls", [])}")
-                    # yield msg.content
-                    # print(f"SQL List: {sqlList}")
-                    yield (json.dumps({"answer":msg.content,"SQLList":sqlList})+"\n").encode("utf-8")
+        try:
+            for event in sql_agent.stream({"messages":("user",question)},stream_mode='values'):
+                print("Event: ",event)
+                for msg in event.get("messages",[]):
+                    # print("Message MSG: ",msg)
+                    # print(f"Checker: {isinstance(msg,AIMessage)}")
+                    if  isinstance(msg,AIMessage):
+                        # print(f"Message Conntent: {msg.content}")
+                        tool_calls = msg.additional_kwargs.get("tool_calls", [])
+                        if tool_calls:
+                            arguments_json = tool_calls[0]['function']['arguments']
+                            arguments = json.loads(arguments_json)  # Parse the JSON string
+                            sql_query = arguments.get('query')
+                            if sql_query is not None:
+                                sqlList.append(sql_query)
+                            # print("SQL Query:", sql_query)
+                        else:
+                            # print("No tool calls found.")
+                            pass
+                        # print(f"Message SQL Content: {msg.additional_kwargs.get("tool_calls", [])}")
+                        # yield msg.content
+                        # print(f"SQL List: {sqlList}")
+                        yield (json.dumps({"result":msg.content,"sql":sqlList,"error":None})+"\n").encode("utf-8")
+        except Exception as e:
+            yield(json.dumps({"result":"No Answer Found", "sql":"No SQL Found","error":e})+"\n").encode("utf-8")
 
     return StreamingResponse(even_stream(),media_type="application/x-ndjson")
 
