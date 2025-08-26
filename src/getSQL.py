@@ -59,7 +59,7 @@ async def stream_answer(query_input:QueryInput):
         validate=user_question.parse(question)
         print("Validate: ",validate)
     except Exception as e: 
-        print(f"Input Validation failed: {e}")
+        yield f"Input Validation failed: {e}"
     def even_stream():
         for event in sql_agent.stream({"messages":("user",question)},stream_mode='values'):
                 # last_msg=event['messages'][-1]
