@@ -65,7 +65,7 @@ async def stream_answer(query_input:QueryInput):
                 # last_msg=event['messages'][-1]
                 # yield (json.dumps({"answer":last_msg.content})+"\n").encode('utf-8')
             print("Event: ",event)
-            print(f"event get: {event.get("messages",[])}")
+            # print(f"event get: {event.get("messages",[])}")
             for msg in event.get("messages",[]):
                 print(f"Checker: {isinstance(msg,AIMessage)}")
                 if  isinstance(msg,AIMessage):
