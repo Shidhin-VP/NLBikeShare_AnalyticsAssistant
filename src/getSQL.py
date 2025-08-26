@@ -73,8 +73,6 @@ async def stream_answer(query_input:QueryInput):
                     last_msg=event['messages'][-1]
                     yield msg.content
                     # yield (json.dumps({"answer":last_msg})+"\n").encode("utf-8")
-                else:
-                    yield "AI Not Answered, please check OpenAI Limit"
 
 
     return StreamingResponse(even_stream(),media_type="application/x-ndjson")
