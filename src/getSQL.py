@@ -71,7 +71,8 @@ async def stream_answer(query_input:QueryInput):
                 if  isinstance(msg,AIMessage):
                     print(f"Message Conntent: {msg.content}")
                     last_msg=event['messages'][-1]
-                    yield (json.dumps({"answer":last_msg})+"\n").encode("utf-8")
+                    yield msg.content
+                    # yield (json.dumps({"answer":last_msg})+"\n").encode("utf-8")
                 else:
                     yield "AI Not Answered, please check OpenAI Limit"
 
