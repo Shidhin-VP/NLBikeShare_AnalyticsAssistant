@@ -2,6 +2,7 @@ from langchain_community.utilities import SQLDatabase
 from langchain_community.agent_toolkits import SQLDatabaseToolkit
 from langchain.chat_models import init_chat_model
 from langchain_community.chat_models import ChatOllama
+from langchain.schema import AIMessage
 from langchain import hub
 from langgraph.prebuilt import create_react_agent
 from .connectDB import connectDB, loadAPI, loadURL
@@ -50,10 +51,9 @@ async def stream_answer(query_input:QueryInput):
                 # yield (json.dumps({"answer":last_msg.content})+"\n").encode('utf-8')
                 print("Event: ",event)
                 for msg in event.get("messages",[]):
-                    print(f"Checker: {len(msg.response_metadata)}")
-                    if (len(msg.response_metadata)>0):
-                        if  msg.role=="assistant":
-                            yield (json.dumps({"answer":msg.content})+"\n").encode("utf-8")
+                    print(f"Checker: {isinstance(msg,AIMessage)}")
+                    if  isinstance(msg,AIMessage):
+                        yield (json.dumps({"answer":msg.content})+"\n").encode("utf-8")
                     else:
                         yield "AI Not Answered, please check OpenAI Limit"
         except Exception as e:
