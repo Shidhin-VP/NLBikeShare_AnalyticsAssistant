@@ -59,7 +59,8 @@ async def stream_answer(query_input:QueryInput):
                         arguments_json = tool_calls[0]['function']['arguments']
                         arguments = json.loads(arguments_json)  # Parse the JSON string
                         sql_query = arguments.get('query')
-                        sqlList.append(sql_query)
+                        if sql_query is not None:
+                            sqlList.append(sql_query)
                         # print("SQL Query:", sql_query)
                     else:
                         print("No tool calls found.")
