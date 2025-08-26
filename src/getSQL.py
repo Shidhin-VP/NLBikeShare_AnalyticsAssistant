@@ -48,12 +48,11 @@ async def stream_answer(query_input:QueryInput):
     def even_stream():
         for event in sql_agent.stream({"messages":("user",question)},stream_mode='values'):
             print("Event: ",event)
+            print(f"Tool Calls: {event.get("tool_calls","No Tool Got")}")
             for msg in event.get("messages",[]):
                 print(f"Checker: {isinstance(msg,AIMessage)}")
                 if  isinstance(msg,AIMessage):
                     print(f"Message Conntent: {msg.content}")
-                    print(f"Answer: {msg.content[:msg.content.find("SQL for the Answer")]}")
-                    print(f"SQL: {msg.content[msg.content.find("SQL for the Answer"):]}")
                     # yield msg.content
                     yield (json.dumps({"answer":msg.content})+"\n").encode("utf-8")
 
