@@ -47,6 +47,7 @@ async def stream_answer(query_input:QueryInput):
         for event in sql_agent.stream({"messages":("user",question)},stream_mode='values'):
             # last_msg=event['messages'][-1]
             # yield (json.dumps({"answer":last_msg.content})+"\n").encode('utf-8')
+            print("Event: ",event)
             for msg in event.get("messages",[]):
                 if msg.type=="chat" and msg.role=="assistant":
                     yield (json.dumps({"answer":msg.content})+"\n").encode("utf-8")
