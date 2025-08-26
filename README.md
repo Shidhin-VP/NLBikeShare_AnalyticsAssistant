@@ -9,11 +9,11 @@ The app is connected to a Postgres Database, when the user ask questions to find
   ⬇️  
 🌐 Frontend sends request to FastAPI Backend (hosted on Heroku)  
   ⬇️  
-🖥️ Backend converts user query to SQL query    ↔️    🤖 OpenAI API 🤖  
+🖥️ Backend converts user query to SQL query    ↔️    🤖 OpenAI API  
   ⬇️  
-🖥️ Backend fetches data according to the SQL   ↔️    🛢️ Postgres Database 🛢️  
+🖥️ Backend fetches data according to the SQL   ↔️    🛢️ Postgres Database  
   ⬇️  
-🖥️ Backend processes the fetched data to a user-friendly response↔️    🤖 OpenAI API 🤖  
+🖥️ Backend processes the fetched data to a user-friendly response ↔️    🤖 OpenAI API  
   ⬇️  
 🌐 Backend sends response via FastAPI to the Frontend  
   ⬇️  
@@ -21,8 +21,8 @@ The app is connected to a Postgres Database, when the user ask questions to find
 
 
 # URL for Accessing the Sites:  
-https://bikeshareanalyticsassistant.streamlit.app/
-For the Access Code, please DM. 
+https://bikeshareanalyticsassistant.streamlit.app/  
+For the Access Code, please DM.   
 APK for the Mobile app can be find on the APK file that can be found in this main folder
 
 # Demo
