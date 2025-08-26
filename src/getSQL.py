@@ -50,7 +50,7 @@ async def stream_answer(query_input:QueryInput):
                 # yield (json.dumps({"answer":last_msg.content})+"\n").encode('utf-8')
                 print("Event: ",event)
                 for msg in event.get("messages",[]):
-                    print(f"Checker: {msg.response_metadata==None}")
+                    print(f"Checker: {len(msg.response_metadata)}")
                     if  msg.role=="assistant":
                         yield (json.dumps({"answer":msg.content})+"\n").encode("utf-8")
         except Exception as e:
