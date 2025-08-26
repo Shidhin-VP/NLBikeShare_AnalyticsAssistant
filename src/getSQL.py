@@ -51,8 +51,10 @@ async def stream_answer(query_input:QueryInput):
                 print("Event: ",event)
                 for msg in event.get("messages",[]):
                     print(f"Checker: {len(msg.response_metadata)}")
-                    if  msg.role=="assistant":
+                    if  msg.role=="assistant" and len(msg.response_metadata)>0:
                         yield (json.dumps({"answer":msg.content})+"\n").encode("utf-8")
+                    else:
+                        yield "AI Not Answered, please check OpenAI Limit"
         except Exception as e:
             yield f"Error: {e}"
 
