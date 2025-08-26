@@ -50,10 +50,10 @@ async def stream_answer(query_input:QueryInput):
         for event in sql_agent.stream({"messages":("user",question)},stream_mode='values'):
             print("Event: ",event)
             for msg in event.get("messages",[]):
-                print("Message MSG: ",msg)
-                print(f"Checker: {isinstance(msg,AIMessage)}")
+                # print("Message MSG: ",msg)
+                # print(f"Checker: {isinstance(msg,AIMessage)}")
                 if  isinstance(msg,AIMessage):
-                    print(f"Message Conntent: {msg.content}")
+                    # print(f"Message Conntent: {msg.content}")
                     tool_calls = msg.additional_kwargs.get("tool_calls", [])
                     if tool_calls:
                         arguments_json = tool_calls[0]['function']['arguments']
@@ -63,10 +63,26 @@ async def stream_answer(query_input:QueryInput):
                             sqlList.append(sql_query)
                         # print("SQL Query:", sql_query)
                     else:
-                        print("No tool calls found.")
+                        # print("No tool calls found.")
+                        pass
                     # print(f"Message SQL Content: {msg.additional_kwargs.get("tool_calls", [])}")
                     # yield msg.content
-                    print(f"SQL List: {sqlList}")
+                    # print(f"SQL List: {sqlList}")
                     yield (json.dumps({"answer":msg.content,"SQLList":sqlList})+"\n").encode("utf-8")
 
     return StreamingResponse(even_stream(),media_type="application/x-ndjson")
+
+
+
+@app.post("/query/mobile")
+async def strem_toMobile(query_input:QueryInput):
+    question=query_input.question
+    def event_Mobile():
+        for event in sql_agent.stream({"messages":("user",question)},stream_mode='values'):
+            print("Event: ",event)
+            for msg in event.get("messages",[]):
+                if  isinstance(msg,AIMessage):
+                    # yield (json.dumps({"answer":msg.content,"SQLList":sqlList})+"\n").encode("utf-8")
+                    yield msg.content
+
+    return StreamingResponse(event_Mobile(),media_type="application/x-ndjson")
