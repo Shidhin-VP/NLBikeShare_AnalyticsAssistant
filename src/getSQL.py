@@ -44,6 +44,7 @@ async def root():
 
 @app.post("/query")
 async def stream_answer(query_input:QueryInput):
+    sqlList=[]
     question=query_input.question
     def even_stream():
         for event in sql_agent.stream({"messages":("user",question)},stream_mode='values'):
@@ -58,11 +59,13 @@ async def stream_answer(query_input:QueryInput):
                         arguments_json = tool_calls[0]['function']['arguments']
                         arguments = json.loads(arguments_json)  # Parse the JSON string
                         sql_query = arguments.get('query')
-                        print("SQL Query:", sql_query)
+                        sqlList.append(sql_query)
+                        # print("SQL Query:", sql_query)
                     else:
                         print("No tool calls found.")
                     # print(f"Message SQL Content: {msg.additional_kwargs.get("tool_calls", [])}")
                     # yield msg.content
+                    print(f"SQL List: {sqlList}")
                     yield (json.dumps({"answer":msg.content})+"\n").encode("utf-8")
 
     return StreamingResponse(even_stream(),media_type="application/x-ndjson")
