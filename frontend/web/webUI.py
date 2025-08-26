@@ -1,9 +1,10 @@
 import streamlit as st
 import requests
 import json
+import streamlit as st
 
-API_ENDPOINT = ""  
-ACCESS_CODE = "letmein" 
+API_ENDPOINT = st.secrets['api_endpoint']  
+ACCESS_CODE = st.secrets['access_code']
 
 st.set_page_config(page_title="NLBike Assistant", page_icon="🚴", layout="centered")
 
