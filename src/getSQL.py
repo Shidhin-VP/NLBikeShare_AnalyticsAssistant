@@ -67,6 +67,6 @@ async def stream_answer(query_input:QueryInput):
                     # print(f"Message SQL Content: {msg.additional_kwargs.get("tool_calls", [])}")
                     # yield msg.content
                     print(f"SQL List: {sqlList}")
-                    yield (json.dumps({"answer":msg.content})+"\n").encode("utf-8")
+                    yield (json.dumps({"answer":msg.content,"SQLList":sqlList})+"\n").encode("utf-8")
 
     return StreamingResponse(even_stream(),media_type="application/x-ndjson")
