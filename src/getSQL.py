@@ -53,16 +53,8 @@ async def stream_answer(query_input:QueryInput):
                 print(f"Checker: {isinstance(msg,AIMessage)}")
                 if  isinstance(msg,AIMessage):
                     print(f"Message Conntent: {msg.content}")
+                    print(f"Message SQL Content: {msg.additional_kwargs}")
                     # yield msg.content
                     yield (json.dumps({"answer":msg.content})+"\n").encode("utf-8")
-            for tools in event.get("tool_calls",[]):
-                print(f"Toosl Length: {len(tools)}")
-                print(f"Toosl detaisl: {tools}")
-                if tools.get("name")=="query_sql_db":
-                    sql_args=tools.get("args",{})
-                    sql_query=sql_args.get("query")
-                    if sql_query:
-                        print("SQL: ",sql_query)
-
 
     return StreamingResponse(even_stream(),media_type="application/x-ndjson")
