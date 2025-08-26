@@ -5,24 +5,13 @@ from langchain_community.chat_models import ChatOllama
 from langchain.schema import AIMessage
 from langchain import hub
 from langgraph.prebuilt import create_react_agent
-# from guardrail import guard
 from .connectDB import connectDB, loadAPI, loadURL
 
 from fastapi import FastAPI
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
-# from typing import Any, List, Optional
 import json
 
-# @guard
-# def user_question():
-#     """
-#     Expected user question:
-#     - A natural language string
-#     - Must NOT contain SQL keywords like DROP, DELETE, INSERT, UPDATE
-#     - Max length 200 characters
-#     """
-#     pass
 
 cDB=connectDB()
 url=loadURL()
@@ -55,17 +44,9 @@ async def root():
 @app.post("/query")
 async def stream_answer(query_input:QueryInput):
     question=query_input.question
-    # try:
-    #     validate=user_question.parse(question)
-    #     print("Validate: ",validate)
-    # except Exception as e: 
-    #     yield f"Input Validation failed: {e}"
     def even_stream():
         for event in sql_agent.stream({"messages":("user",question)},stream_mode='values'):
-                # last_msg=event['messages'][-1]
-                # yield (json.dumps({"answer":last_msg.content})+"\n").encode('utf-8')
             print("Event: ",event)
-            # print(f"event get: {event.get("messages",[])}")
             for msg in event.get("messages",[]):
                 print(f"Checker: {isinstance(msg,AIMessage)}")
                 if  isinstance(msg,AIMessage):
