@@ -45,19 +45,17 @@ async def root():
 async def stream_answer(query_input:QueryInput):
     question=query_input.question
     def even_stream():
-        try:
-            for event in sql_agent.stream({"messages":("user",question)},stream_mode='values'):
+        for event in sql_agent.stream({"messages":("user",question)},stream_mode='values'):
                 # last_msg=event['messages'][-1]
                 # yield (json.dumps({"answer":last_msg.content})+"\n").encode('utf-8')
-                print("Event: ",event)
-                print(f"event get: {event.get("messages",[])}")
-                for msg in event.get("messages",[]):
-                    print(f"Checker: {isinstance(msg,AIMessage)}")
-                    if  isinstance(msg,AIMessage):
-                        yield (json.dumps({"answer":msg.content})+"\n").encode("utf-8")
-                    else:
-                        yield "AI Not Answered, please check OpenAI Limit"
-        except Exception as e:
-            yield f"Error: {e}"
+            print("Event: ",event)
+            print(f"event get: {event.get("messages",[])}")
+            for msg in event.get("messages",[]):
+                print(f"Checker: {isinstance(msg,AIMessage)}")
+                if  isinstance(msg,AIMessage):
+                    yield (json.dumps({"answer":msg.content})+"\n").encode("utf-8")
+                else:
+                    yield "AI Not Answered, please check OpenAI Limit"
+
 
     return StreamingResponse(even_stream(),media_type="application/x-ndjson")
