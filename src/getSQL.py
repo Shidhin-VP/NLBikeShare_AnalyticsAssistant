@@ -44,12 +44,15 @@ async def root():
 async def stream_answer(query_input:QueryInput):
     question=query_input.question
     def even_stream():
-        for event in sql_agent.stream({"messages":("user",question)},stream_mode='values'):
-            # last_msg=event['messages'][-1]
-            # yield (json.dumps({"answer":last_msg.content})+"\n").encode('utf-8')
-            print("Event: ",event)
-            for msg in event.get("messages",[]):
-                if msg.type=="chat" and msg.role=="assistant":
-                    yield (json.dumps({"answer":msg.content})+"\n").encode("utf-8")
+        try:
+            for event in sql_agent.stream({"messages":("user",question)},stream_mode='values'):
+                # last_msg=event['messages'][-1]
+                # yield (json.dumps({"answer":last_msg.content})+"\n").encode('utf-8')
+                print("Event: ",event)
+                for msg in event.get("messages",[]):
+                    if msg.type=="chat" and msg.role=="assistant":
+                        yield (json.dumps({"answer":msg.content})+"\n").encode("utf-8")
+        except Exception as e:
+            yield f"Error: {e}"
 
     return StreamingResponse(even_stream(),media_type="application/x-ndjson")
